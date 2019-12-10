@@ -105,6 +105,7 @@ describe('app routes', () => {
         'bake for 10 minutes'
       ],
     });
+
     return request(app)
       .get(`/api/v1/recipes/${recipe._id}`)
       .then(res => {
