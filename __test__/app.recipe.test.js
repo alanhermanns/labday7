@@ -83,11 +83,12 @@ describe('app routes', () => {
 
     return request(app)
       .get('/api/v1/recipes')
-      .then(res => {
+      .then(res => () => {
         recipes.forEach(recipe => {
           expect(res.body).toContainEqual({
             _id: recipe._id.toString(),
-            name: recipe.name
+            name: recipe.name,
+            directions: [],
           });
         });
       });
