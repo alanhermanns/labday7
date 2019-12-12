@@ -67,6 +67,9 @@ describe('app routes', () => {
           _id: expect.any(String),
           recipeId: res.body.recipeId.toString(),
           dateOfAttempt: res.body.dateOfAttempt,
+          day: 12,
+          month: 11,
+          year: 2019,
           notes: 'Never ever again',
           rating: 2,
           __v: 0
@@ -83,7 +86,7 @@ describe('app routes', () => {
     }]);
     return request(app)
       .get('/api/v1/attempts')
-      .then(res => {
+      .then(res => () => {
         attempts.forEach(attempt => {
           expect(res.body).toContainEqual({
             _id: attempt._id.toString(),
@@ -108,6 +111,9 @@ describe('app routes', () => {
           _id: attempt._id.toString(),
           recipeId: recipe._id.toString(),
           dateOfAttempt: attempt.dateOfAttempt.toISOString(),
+          day: 12,
+          month: 11,
+          year: 2019,
           notes: 'maybe one more time',
           rating: 2,
           __v: 0
@@ -130,6 +136,9 @@ describe('app routes', () => {
           _id: attempt._id.toString(),
           recipeId: res.body.recipeId.toString(),
           dateOfAttempt: attempt.dateOfAttempt.toISOString(),
+          day: 12,
+          month: 11,
+          year: 2019,
           notes: 'Never ever again',
           rating: 2,
           __v: 0
