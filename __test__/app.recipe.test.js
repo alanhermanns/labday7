@@ -177,7 +177,7 @@ describe('app routes', () => {
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          attempt : [],
+          Attempts : [],
           name: 'cookies',
           directions: [
             'preheat oven to 375',
