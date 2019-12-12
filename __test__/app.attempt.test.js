@@ -6,6 +6,8 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Attempt = require('../lib/models/Attempt');
+const Recipe = require('../lib/models/Recipe');
+let recipe;
 
 describe('app routes', () => {
   beforeAll(() => {
@@ -15,7 +17,38 @@ describe('app routes', () => {
   beforeEach(() => {
     return mongoose.connection.dropDatabase();
   });
+  beforeEach(async() => {
+    recipe = await Recipe.create({
+      name: 'cookies',
+      directions: [
+        'preheat oven to 375',
+        'mix ingredients',
+        'put dough on cookie sheet',
+        'bake for 10 minutes'
+      ],
+      ingredients: [
+        {
+          amount: 5,
+          measurement: 'cups',
+          name: 'flour',
+        },
+        {
+          amount: 12,
+          measurement: 'sticks',
+          name: 'butter',
+        }
+      ]
+    });
+  });
 
+  beforeEach(async() => {
+    await Attempt.create({
+      recipeId: recipe._id.toString(),
+      dateOfAttempt: new Date(),
+      notes: 'Never ever again',
+      rating: 2
+    });
+  });
   afterAll(() => {
     return mongoose.connection.close();
   });
@@ -24,7 +57,7 @@ describe('app routes', () => {
     return request(app)
       .post('/api/v1/attempts')
       .send({
-        recipeId: 'Pie4',
+        recipeId: recipe._id.toString(),
         dateOfAttempt: new Date(),
         notes: 'Never ever again',
         rating: 2
@@ -32,7 +65,7 @@ describe('app routes', () => {
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          recipeId: 'Pie4',
+          recipeId: res.body.recipeId.toString(),
           dateOfAttempt: res.body.dateOfAttempt,
           notes: 'Never ever again',
           rating: 2,
@@ -42,10 +75,12 @@ describe('app routes', () => {
   });
 
   it('gets all attempts', async() => {
-    const attempts = await Attempt.create([
-      { recipeId: 'cookies2', dateOfAttempt: new Date, notes: 'Bad', rating: 2 }
-    ]);
-
+    const attempts = await Attempt.create([{
+      recipeId: recipe._id.toString(),
+      dateOfAttempt: new Date(),
+      notes: 'Never ever again',
+      rating: 2
+    }]);
     return request(app)
       .get('/api/v1/attempts')
       .then(res => {
@@ -59,7 +94,7 @@ describe('app routes', () => {
 
   it('updates an attempt by id', async() => {
     const attempt = await Attempt.create({
-      recipeId: 'Pie4',
+      recipeId: recipe._id,
       dateOfAttempt: String(new Date().toString()),
       notes: 'Never ever again',
       rating: 2
@@ -71,7 +106,7 @@ describe('app routes', () => {
       .then(res => {
         expect(res.body).toEqual({
           _id: attempt._id.toString(),
-          recipeId: 'Pie4',
+          recipeId: recipe._id.toString(),
           dateOfAttempt: attempt.dateOfAttempt.toISOString(),
           notes: 'maybe one more time',
           rating: 2,
@@ -82,7 +117,7 @@ describe('app routes', () => {
 
   it('gets a recipe by id', async() => {
     const attempt = await Attempt.create({
-      recipeId: 'Pie4',
+      recipeId: recipe._id.toString(),
       dateOfAttempt: new Date(),
       notes: 'Never ever again',
       rating: 2
@@ -93,7 +128,7 @@ describe('app routes', () => {
       .then(res => {
         expect(res.body).toEqual({
           _id: attempt._id.toString(),
-          recipeId: 'Pie4',
+          recipeId: res.body.recipeId.toString(),
           dateOfAttempt: attempt.dateOfAttempt.toISOString(),
           notes: 'Never ever again',
           rating: 2,
