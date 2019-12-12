@@ -90,6 +90,13 @@ describe('app routes', () => {
         attempts.forEach(attempt => {
           expect(res.body).toContainEqual({
             _id: attempt._id.toString(),
+            recipeId: recipe._id.toString(),
+            dateOfAttempt: new Date(),
+            day: 12,
+            month: 11,
+            year: 2019,
+            notes: 'Never ever again',
+            rating: 2
           });
         });
       });
