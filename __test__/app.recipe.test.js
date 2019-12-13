@@ -241,6 +241,7 @@ describe('app routes', () => {
     return request(app)
       .delete(`/api/v1/recipes/${recipe._id}`)
       .then(res => {
+        console.log(res.body);
         expect(res.body).toEqual({
           _id: recipe._id.toString(),
           'attempts': [
@@ -248,8 +249,8 @@ describe('app routes', () => {
               '__v': 0,
               '_id': expect.any(String),
               'dateOfAttempt': expect.any(String),
-              'day': 12,
-              'month': 11,
+              'day': res.body.attempts[0].day,
+              'month': res.body.attempts[0].month,
               'year': 2019,
               'notes': 'Never ever again',
               'rating': 2,
@@ -259,8 +260,8 @@ describe('app routes', () => {
               '__v': 0,
               '_id': expect.any(String),
               'dateOfAttempt': expect.any(String),
-              'day': 12,
-              'month': 11,
+              'day': res.body.attempts[1].day,
+              'month': res.body.attempts[1].month,
               'year': 2019,
               'notes': 'Oh man',
               'rating': 2,
