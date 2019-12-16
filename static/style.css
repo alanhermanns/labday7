@@ -1,0 +1,73 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: lightcoral;
+    animation: changeColor 8s;
+    animation-fill-mode: forwards;
+}
+h1{
+    color: black;
+    border:  10px solid black;
+    box-shadow: 10px 10px 10px;
+    font-size: 100px;
+    font-family: 'Symbol-regular';
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+    animation: fade-down 4s ease-in 4s;
+    animation-fill-mode: forwards;
+    animation: changeColor 8s;
+}
+
+h2{
+    visibility: hidden;
+    animation: suddenDisplay .1s;
+    animation-delay: 8s;
+    animation-fill-mode: forwards;
+    border: 1px solid white;
+    border-radius: 8%;
+    padding: 2px;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+
+
+}
+
+
+
+@keyframes fade-down {
+    0% {
+        transform: translateY(-1000px);
+    }
+    25%{
+        transform: translateY(0px);
+    }
+    50%{
+        transform: skew(30deg, 20deg);
+    }
+    60%{
+        background-color: red;
+        transform: rotate(1.5turn);
+    }
+    100%{
+        transform: translateY(-1000px);
+    }
+
+}
+
+@keyframes changeColor{
+    from{
+        background-color: lightcoral;
+    }
+    to{
+    background-color: black;
+    }
+}
+
+@keyframes suddenDisplay {
+    from {
+        visibility: hidden;
+    }
+    to{
+        visibility: visible;
+    }
+}
